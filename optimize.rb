@@ -140,13 +140,13 @@ total_old = savings[:old].inject(0){|sum,item| sum + item}
 total_new = savings[:new].inject(0){|sum,item| sum + item}
 total_reduction = 100.0 - (total_new/total_old*100.0)
 
-msg = "Started at: #{start_time}\nFinished at: #{Time.now.to_s}" 
+msg = "Started at: #{start_time}\tFinished at: #{Time.now.to_s}" 
 @log[:status].puts msg; @log[:report].puts msg; puts msg
 
-msg = "Files: #{comma file_list.size}\nSkipped: #{comma skip_cnt}\nProcessed: #{comma(proc_cnt)}"
+msg = "Files: #{comma file_list.size}\tSkipped: #{comma skip_cnt}\tProcessed: #{comma(proc_cnt)}"
 @log[:status].puts msg; @log[:report].puts msg; puts msg
 
-msg = "Total savings:\n#{sprintf "%0.2f", total_reduction}% | #{comma total_old.to_i} -> #{comma total_new.to_i} (#{to_kb(total_old.to_i - total_new.to_i)})"
+msg = "Total savings:\t#{sprintf "%0.2f", total_reduction}% | #{comma total_old.to_i} -> #{comma total_new.to_i} (#{to_kb(total_old.to_i - total_new.to_i)})"
 @log[:status].puts msg; @log[:report].puts msg; puts msg
 
 # close files
