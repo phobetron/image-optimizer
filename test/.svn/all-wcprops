@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/argo/!svn/ver/12772/image-optimization/test
+END
+ref.png
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/argo/!svn/ver/12777/image-optimization/test/ref.png
+END
+ref.gif
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/argo/!svn/ver/12777/image-optimization/test/ref.gif
+END
+ref.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/argo/!svn/ver/12777/image-optimization/test/ref.jpg
+END
