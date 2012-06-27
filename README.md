@@ -6,12 +6,12 @@ The required tools are `gifsicle`, `jpegtran`, and `pngcrush.`
 
 To run:
 
-  ?> ruby optimize.rb dir/
+    ?> ruby optimize.rb dir/
 
 A similar Rake task is included, but it only scans the ./public/images folder at this time.
 
-  ?> rake optimize
+    ?> rake optimize
 or
-  ?> bundle exec rake optimize
+    ?> bundle exec rake optimize
 
 These scripts have only been tested under MacOS X.
