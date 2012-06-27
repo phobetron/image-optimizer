@@ -11,7 +11,9 @@ To run:
 A similar Rake task is included, but it only scans the ./public/images folder at this time.
 
     ?> rake optimize
+
 or
+
     ?> bundle exec rake optimize
 
 These scripts have only been tested under MacOS X.
