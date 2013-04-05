@@ -13,9 +13,18 @@ namespace :optimize do
 
   task :run do
     RakeFileUtils.verbose(false)
-    start_time = Time.now.to_s
+    start_time = Time.now
 
     file_list = FileList.new 'public/images/**/*.{gif,jpeg,jpg,png}'
+
+    last_optimized_path = 'public/images/.last_optimized'
+    if File.exists? last_optimized_path
+      last_optimized = File.new last_optimized_path
+      file_list.exclude do |f|
+        File.new(f).mtime < last_optimized.mtime
+      end
+    end
+
     puts "\nOptimizing #{ file_list.size } image files."
 
     proc_cnt = 0
@@ -80,10 +89,14 @@ namespace :optimize do
 
     total_old = savings[:old].inject(0){|sum,item| sum + item}
     total_new = savings[:new].inject(0){|sum,item| sum + item}
-    total_reduction = 100.0 - (total_new/total_old*100.0)
+    total_reduction = total_old > 0 ? (100.0 - (total_new/total_old*100.0)) : 0
 
-    puts "\nStarted at: #{start_time}\tFinished at: #{Time.now.to_s}"
-    puts "Files: #{file_list.size}\tSkipped: #{skip_cnt}\tProcessed: #{proc_cnt}"
-    puts "\nTotal savings: #{sprintf "%0.2f", total_reduction}% | #{total_old.to_i} -> #{total_new.to_i} (#{total_old.to_i - total_new.to_i})"
+    minutes, seconds = (Time.now - start_time).divmod 60
+    puts "\nTotal run time: #{minutes}m #{seconds.round}s"
+
+    puts "Files: #{file_list.size}\tProcessed: #{proc_cnt}\tSkipped: #{skip_cnt}"
+    puts "\nTotal savings:\t#{sprintf "%0.2f", total_reduction}% | #{total_old.to_i} -> #{total_new.to_i} (#{total_old.to_i - total_new.to_i})"
+
+    FileUtils.touch last_optimized_path
   end
 end
