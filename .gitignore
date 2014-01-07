@@ -1,3 +1,4 @@
 work/
 .DS_Store
 test/*.log
+.*.swp
