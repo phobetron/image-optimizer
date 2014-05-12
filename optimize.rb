@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 # -*- coding: utf-8 -*-
 
 def self.comma(x)
