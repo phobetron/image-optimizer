@@ -27,21 +27,8 @@ def self.process_jpeg(file_path)
 end
 
 def self.process_jpg(file_path)
-  %x[ jpegtran -copy none -optimize -perfect -progressive #{file_path} > #{file_path}.p ]
-  prog_size = File.size?("#{file_path}.p")
-
-  %x[ jpegtran -copy none -optimize -perfect #{file_path} > #{file_path}.np ]
-  nonprog_size = File.size?("#{file_path}.np")
-
-  if prog_size < nonprog_size
-    File.delete("#{file_path}.np")
-    File.rename("#{file_path}.p", "#{file_path}.n")
-    return 'P'
-  else
-    File.delete("#{file_path}.p")
-    File.rename("#{file_path}.np", "#{file_path}.n")
-    return nil
-  end
+  %x[ jpegtran -copy none -optimize -perfect -progressive #{file_path} > #{file_path}.n ]
+  return nil
 end
 
 def self.process_png(file_path)
@@ -99,7 +86,7 @@ file_list.each_with_index do |f,cnt|
   # save ext
   extension = File.extname(f).delete('.')
 
-  # check extension matches file type, if not log & skip processing, 
+  # check extension matches file type, if not log & skip processing,
   cmd = "file -b #{f} | awk '{print $1}'"
   ext_check = %x[#{cmd}].strip.downcase
   ext_check.gsub!(/jpeg/,'jpg')
@@ -115,7 +102,7 @@ file_list.each_with_index do |f,cnt|
   status_code = self.send("process_#{extension}", f)
 
   # get old & new file size
-  old_size = File.size?(f).to_f 
+  old_size = File.size?(f).to_f
   new_size = File.size?("#{f}.n").to_f
 
   # keep smaller file, delete bigger file, rename new file to old (if smaller)
@@ -142,7 +129,7 @@ total_old = savings[:old].inject(0){|sum,item| sum + item}
 total_new = savings[:new].inject(0){|sum,item| sum + item}
 total_reduction = 100.0 - (total_new/total_old*100.0)
 
-msg = "Started at: #{start_time}\tFinished at: #{Time.now.to_s}" 
+msg = "Started at: #{start_time}\tFinished at: #{Time.now.to_s}"
 @log[:status].puts msg; @log[:report].puts msg; puts msg
 
 msg = "Files: #{comma file_list.size}\tSkipped: #{comma skip_cnt}\tProcessed: #{comma(proc_cnt)}"
